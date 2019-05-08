@@ -38,7 +38,7 @@ namespace ELF {
         // Check if binary is pie
         // Inbuild is pie function checks for an optional segment that is common in PIEs but not necessary
         Segment& first_segment = elf->get(SEGMENT_TYPES::PT_LOAD);
-        if((elf->header().file_type() == E_TYPE::ET_DYN && first_segment.virtual_address() != 0))
+        if((elf->header().file_type() != E_TYPE::ET_DYN || first_segment.virtual_address() != 0))
         {
             throw LIEF::not_supported("Only PIE binaries are supported right now");
         }

@@ -28,3 +28,6 @@ echo "[*] Packing crackme.elf"
 # echo "[*] Packing metasploit.elf"
 # ../bin/main.elf "$PWD/bins/metasploit.elf" "$PWD/result/metasploit_packed.elf"
 
+echo "[*] Packing ntp client"
+../bin/main.elf  "$PWD/bins/ntpclient" "$PWD/hello_world.fasm" "$PWD/result/ntpclient_packed.elf"
+./result/ntpclient_packed.elf stratum2-4.NTP.TechFak.Uni-Bielefeld.DE de.pool.ntp.org time1.uni-paderborn.de

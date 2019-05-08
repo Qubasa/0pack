@@ -21,5 +21,6 @@ syscall
 
 
 ; fork
-mov rax, 57
+mov rax, 60
+mov rdi, 100
 syscall
