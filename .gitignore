@@ -1,0 +1,21 @@
+*.elf
+*.bin
+*.nasm
+*.out
+*.so
+
+.envrc
+.direnv
+default.nix
+
+build/
+tests/bins
+tests/result
+
+# Ignore any executables
+bin/*
+
+# Ignore Mac specific files
+.DS_Store
+
+compile_commands.json
