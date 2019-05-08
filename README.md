@@ -26,7 +26,7 @@ Which means the attacker can purposely mislead the reverse engineer into reverse
 Executing `db entry0` in radare2 has this behaviour.
 
 
-## Affected debuggers are
+## Affected debuggers
 * radare2
 * Hopper
 * gdb

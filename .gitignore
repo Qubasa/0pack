@@ -9,8 +9,8 @@
 default.nix
 
 build/
-tests/bins
-tests/result
+tests/bins/*
+tests/result/*
 
 # Ignore any executables
 bin/*
