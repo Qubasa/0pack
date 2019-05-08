@@ -6,12 +6,20 @@ format ELF64 executable
 jmp afterpayload
 
 payload db 'Hello Payload!!', 0xA, 0
-sizeOfString = $-payload
+payloadSize = $-payload
 afterpayload:
 
+; print doesn't work in payload probably
+; because the filedescriptors for stdin/stdout are not initialized yet
+
+; Print
 mov rax, 1
 mov rdi, 1
 mov rsi, payload
-mov rdx, sizeOfString ; length
+mov rdx, payloadSize ; length
 syscall
 
+
+; fork
+mov rax, 57
+syscall
