@@ -16,7 +16,7 @@ Or in other terms:
 ```
 -static means a statically linked executable with no dynamic
 > relocations and only PT_LOAD segments.  -pie means a shared library with
-> dynamic relocations and PT_INTERP and PT_DYNAMIC segments.  <Paste>
+> dynamic relocations and PT_INTERP and PT_DYNAMIC segments.
 ```
 
 ## Debugger behaviour
