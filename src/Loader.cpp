@@ -291,7 +291,6 @@ namespace ELF {
 
     void Loader::xor_decrypt(RegName base_address, uint64_t dest, uint64_t src, size_t size, uint8_t key)
     {
-
         std::string label = random_string(7); //TODO: Only character string
 
         append(R"(

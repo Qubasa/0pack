@@ -26,7 +26,7 @@
 
 
 std::string random_string( size_t length );
-bool does_file_exist(const char *fileName);
+bool does_file_exist(std::string fileName);
 void print_vector(std::vector<uint8_t>& vec);
 std::shared_ptr<spdlog::logger> get_logger(std::string name);
 

@@ -51,7 +51,8 @@ class Packer
         std::vector<std::reference_wrapper<Relocation>> jmp_seg_reloc( uint64_t jmp_address, std::vector<std::reference_wrapper<Relocation>> relocs);
         std::vector<std::reference_wrapper<Relocation>> init_relocs(size_t file_offset, size_t size);
 
-         std::vector<std::pair<unsigned char, uint64_t>> flag_to_ptrs(std::initializer_list<std::string> blacklist_sections, std::string flag);
+        std::vector<std::pair<unsigned char, uint64_t>> flag_to_ptrs(std::initializer_list<std::string> blacklist_sections, std::string flag);
+        std::string get_destination();
         void create_copy_dummy_sections(std::vector<std::string> orig_sects, size_t num);
         void randomize_static_symbol_table();
         void set_entrypoint(uint64_t entry);

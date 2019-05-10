@@ -46,6 +46,11 @@ namespace ELF {
         this->dst_path = dst_path;
     }
 
+    std::string Packer::get_destination()
+    {
+        return this->dst_path;
+    }
+
     /*
      * Adds a relocation that writes a single byte to the specified offset
      * */

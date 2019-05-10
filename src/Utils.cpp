@@ -34,7 +34,7 @@ std::string random_string(size_t len)
      return str.substr(0, len);
 }
 
-bool does_file_exist(const char *fileName)
+bool does_file_exist(std::string fileName)
 {
     std::ifstream infile(fileName);
     return infile.good();

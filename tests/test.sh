@@ -4,7 +4,7 @@
 
 pushd . || exit
 cd ..
-rm -f bin/main.elf
+rm -f bin/0pack
 ./build.sh
 
 popd || exit
@@ -21,13 +21,13 @@ echo ""
 echo "[*] Deleting old packed binary"
 rm -f ./result/pie_packed.elf
 
-echo "[*] Packing crackme.elf"
-../bin/main.elf "$PWD/bins/pie_test.elf" "$PWD/hello_world.fasm" "$PWD/result/pie_packed.elf"
-./result/pie_packed.elf
+# echo "[*] Packing crackme.elf"
+# ../bin/main.elf "$PWD/bins/pie_test.elf" "$PWD/hello_world.fasm" "$PWD/result/pie_packed.elf"
+# ./result/pie_packed.elf
 
-# echo "[*] Packing metasploit.elf"
-# ../bin/main.elf "$PWD/bins/metasploit.elf" "$PWD/result/metasploit_packed.elf"
+echo "[*] Packing NTP-Client"
+../bin/0pack "$PWD/bins/ntpclient" "$PWD/hello_world.fasm" "$PWD/result/ntpclient_packed.elf"
 
-echo "[*] Packing ntp client"
-../bin/main.elf  "$PWD/bins/ntpclient" "$PWD/hello_world.fasm" "$PWD/result/ntpclient_packed.elf"
-./result/ntpclient_packed.elf stratum2-4.NTP.TechFak.Uni-Bielefeld.DE de.pool.ntp.org time1.uni-paderborn.de
+# echo "[*] Packing ntp client"
+# ../bin/main.elf  "$PWD/bins/ntpclient" "$PWD/hello_world.fasm" "$PWD/result/ntpclient_packed.elf"
+# ./result/ntpclient_packed.elf stratum2-4.NTP.TechFak.Uni-Bielefeld.DE de.pool.ntp.org time1.uni-paderborn.de

@@ -58,7 +58,7 @@ set( CMAKE_EXPORT_COMPILE_COMMANDS ON ) # For YCM
 
 # Add our executable
 # ==================
-set(BINNAME "main.elf")
+set(BINNAME "0pack")
 set(MYSOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/RegisterManager.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/Packer.cpp"
@@ -96,7 +96,13 @@ add_dependencies("${BINNAME}" LIEF)
 # Dependencies
 # ============
 hunter_add_package(spdlog)
-hunter_add_package(fmt)
 find_package(spdlog CONFIG REQUIRED)
 target_link_libraries("${BINNAME}" PUBLIC spdlog::spdlog)
+
+hunter_add_package(fmt)
+find_package(fmt CONFIG REQUIRED)
+
+hunter_add_package(cxxopts)
+find_package(cxxopts CONFIG REQUIRED)
+target_link_libraries("${BINNAME}" PUBLIC cxxopts::cxxopts)
 
