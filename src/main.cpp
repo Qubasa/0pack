@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
       ("i,input", "Input file path. Required.", cxxopts::value<std::string>())
       ("p,payload", "Payload path. Required.", cxxopts::value<std::string>())
       ("o,output", "Output file path. Required.", cxxopts::value<std::string>())
+      ("s,strip", "Strip the binary. Optional.")
       ;
 
     auto result = options.parse(argc, argv);
@@ -121,6 +122,14 @@ int main(int argc, char *argv[]) {
         fs::remove(packer.get_destination());
         exit(1);
     }
+
+    if(result.count("strip"))
+    {
+        console->info("Stripping static symbols");
+        packer.strip();
+        console->debug(fmt::format("Entrypoint after stripping is {:#x}", packer.get_entrypoint() ));
+    }
+
 
     console->info("Setting entrypoint to 0");
     // Set entrypoint to 0

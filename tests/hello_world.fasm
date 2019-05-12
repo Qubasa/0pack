@@ -20,10 +20,10 @@ mov rdx, payloadSize ; length
 syscall
 
 ; fork
-mov rax, 57
-syscall
+;mov rax, 57
+;syscall
 
 ; exit code with 100
-;mov rax, 60
-;mov rdi, 100
-;syscall
+mov rax, 60
+mov rdi, 100
+syscall

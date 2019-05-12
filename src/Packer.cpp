@@ -72,11 +72,25 @@ namespace ELF {
      * */
     std::vector<std::reference_wrapper<Relocation>> Packer::init_relocs(size_t file_offset, size_t size)
      {
+        Symbol temp_null_sym = Symbol(random_string(10));
+        Symbol& null_sym = elf->add_dynamic_symbol(temp_null_sym);
+
+        null_sym.type(ELF_SYMBOL_TYPES::STT_NOTYPE); // st_info field
+        null_sym.binding(SYMBOL_BINDINGS::STB_WEAK); // global bindings don't work. TODO Why?
+        null_sym.value(0);
+        null_sym.size(0); // 0 means uknown size
+
+        elf->write(dst_path);
+
+        size_t countDynSym = std::distance(elf->dynamic_symbols().begin(), elf->dynamic_symbols().end());
+
         std::vector<std::reference_wrapper<Relocation>> relocs;
 
         for(size_t i = 0; i < size; i++) // +1 for jmp instruction at beginning
         {
             Relocation& rel = add_write_reloc(0, file_offset+i);
+            rel.info(countDynSym-1);
+            _logger->debug("Setting reloc to section index: {}", rel.info());
             relocs.push_back(rel);
         }
 
@@ -172,6 +186,12 @@ namespace ELF {
         elf->write(dst_path);
     }
 
+
+     void Packer::strip()
+    {
+        elf->strip();
+        elf->write(dst_path);
+    }
 
 
     /*
