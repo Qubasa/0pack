@@ -19,6 +19,9 @@ Or in other terms:
 > dynamic relocations and PT_INTERP and PT_DYNAMIC segments.
 ```
 
+## Presentation links
+HTML: https://luis-hebendanz.github.io/0pack/
+
 ## Debugger behaviour
 Debuggers don't generally like 0 as the entrypoint and oftentimes it is impossible to set breakpoints at the header area.
 Another often occured issue is that the entry0 label gets set incorrectly to the main label.
