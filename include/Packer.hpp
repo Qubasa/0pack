@@ -59,7 +59,7 @@ class Packer
         void randomize_static_symbol_table();
         void set_entrypoint(uint64_t entry);
         uint64_t get_entrypoint();
-        void set_first_seg_writeable();
+        void set_first_seg_rwx();
         Segment& get_first_seg();
         void build();
 

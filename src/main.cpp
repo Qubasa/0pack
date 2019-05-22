@@ -19,21 +19,39 @@ int main(int argc, char *argv[]) {
     options.add_options()
       ("d,debug", "Enable debugging")
       ("i,input", "Input file path. Required.", cxxopts::value<std::string>())
-      ("p,payload", "Payload path. Required.", cxxopts::value<std::string>())
+      ("p,payload", "Payload path. ", cxxopts::value<std::string>())
+      ("b,bin_payload", "Payload path as binary.", cxxopts::value<std::string>())
       ("o,output", "Output file path. Required.", cxxopts::value<std::string>())
       ("s,strip", "Strip the binary. Optional.")
       ;
 
     auto result = options.parse(argc, argv);
 
-    if(!result.count("input") || !result.count("output") || !result.count("payload"))
+    if(!result.count("input") || !result.count("output") || (!result.count("payload") && !result.count("bin_payload")))
     {
         std::cout << options.help({}) << std::endl;
         exit(1);
     }
 
     bool debugMode = result["debug"].as<bool>();
-    std::string payload_path = result["payload"].as<std::string>();
+
+    if(result.count("payload") && result.count("bin_payload"))
+    {
+        std::cerr << "Options 'payload' and 'bin_payload' are mutually exclusive" << std::endl;
+        exit(1);
+    }
+
+    std::string payload_path = "";
+    if(result.count("payload"))
+    {
+        payload_path = result["payload"].as<std::string>();
+    }
+
+    if(result.count("bin_payload"))
+    {
+        payload_path = result["payload"].as<std::string>();
+    }
+
     std::string src_file = result["input"].as<std::string>();
     std::string output_file = result["output"].as<std::string>();
 
@@ -111,7 +129,7 @@ int main(int argc, char *argv[]) {
     console->info("Payload size: {}", compiled_payload.size());
 
     // Set first segment to writeable
-    packer.set_first_seg_writeable();
+    packer.set_first_seg_rwx();
     packer.buf_to_reloc(compiled_payload, empty_buf_relocs);
 
     console->debug(fmt::format("Entrypoint after adding Relocs is {:#x}", packer.get_entrypoint() ));
