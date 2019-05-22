@@ -20,8 +20,8 @@ Or in other terms:
 ```
 
 ## Presentation links
-HTML: https://luis-hebendanz.github.io/0pack/
-PDF: https://github.com/Luis-Hebendanz/blob/master/0pack/0pack-pres.pdf?raw=true
+HTML: https://luis-hebendanz.github.io/0pack/  
+PDF: https://github.com/Luis-Hebendanz/blob/master/0pack/0pack-presentation.pdf?raw=true
 
 
 ## Debugger behaviour
