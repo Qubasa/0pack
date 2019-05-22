@@ -5,21 +5,21 @@
   <meta HTTP-EQUIV=CONTENT-TYPE CONTENT="text/html; charset=utf-8">
   <title>Slide 16</title>
 </head>
-<body>
+<body text="#1C1C1C" bgcolor="#FFFFFF" link="#3584E4" vlink="#1B6ACB" alink="#3584E4">
 <center>
-<a href="text0.html">First page</a> <a href="text14.html">Back</a> Continue Last page <a href="elf-obfuscation.html">Overview</a> <a href="img15.html">Image</a></center><br>
-<h1>0Pack inner workings</h1>
-<p>ELF ABI: <a href="https://refspecs.linuxfoundation.org/elf/x86_64-abi-0.95.pdf">https://refspecs.linuxfoundation.org</a></p>
-<p>Set entrypoint to 0</p>
-<p>Set first segment</p>
-<p> to RWX</p>
-<p>Append code that</p>
-<p>erases shellcode after</p>
-<p>execution </p>
-<p>Convert shellcode to</p>
-<p>R_X86_64_64 </p>
-<p>Relocations</p>
-<p>Append a relative jmp</p>
-<p>to original entrypoint</p>
+<a href="text0.html">First page</a> <a href="text14.html">Back</a> <a href="text16.html">Continue</a> <a href="text16.html">Last page</a> <a href="elf-obfuscation.html">Overview</a> <a href="img15.html">Image</a></center><br>
+<h1><font color="#FFFFFF">0Pack inner workings</font></h1>
+<p><font color="#000000">Set entrypoint to 0</font></p>
+<p><font color="#000000">Set first segment</font></p>
+<p><font color="#000000"> to RWX</font></p>
+<p><font color="#000000">(*) Append code that</font></p>
+<p><font color="#000000">erases shellcode after</font></p>
+<p><font color="#000000">Execution </font></p>
+<p><font color="#000000">Convert shellcode to</font></p>
+<p><font color="#000000">R_X86_64_64 </font></p>
+<p><font color="#000000">Relocations</font></p>
+<p><font color="#000000">Append a relative jmp</font></p>
+<p><font color="#000000">to original entrypoint</font></p>
+<p><font color="#000000">* Not yet implemented in the poc</font></p>
 </body>
 </html>
