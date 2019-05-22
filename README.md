@@ -21,6 +21,8 @@ Or in other terms:
 
 ## Presentation links
 HTML: https://luis-hebendanz.github.io/0pack/
+PDF: https://github.com/Luis-Hebendanz/blob/master/0pack/0pack-pres.pdf?raw=true
+
 
 ## Debugger behaviour
 Debuggers don't generally like 0 as the entrypoint and oftentimes it is impossible to set breakpoints at the header area.
