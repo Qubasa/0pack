@@ -21,7 +21,7 @@ Or in other terms:
 
 ## Presentation links
 HTML: https://luis-hebendanz.github.io/0pack/  
-PDF: https://github.com/Luis-Hebendanz/blob/master/0pack/0pack-presentation.pdf?raw=true
+PDF: https://github.com/Luis-Hebendanz/0pack/raw/master/0pack-presentation.pdf
 
 
 ## Debugger behaviour
