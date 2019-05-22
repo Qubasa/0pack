@@ -1,4 +1,5 @@
-format ELF64 executable
+use64
+;format ELF64 ;executable
 ; rax, rdi, rsi, rdx, rcx, r8, r9, r10, r11 are scratch registers
 ; rbx, rsp, rbp, r12, r13, r14, and r15 are preserved registers
 

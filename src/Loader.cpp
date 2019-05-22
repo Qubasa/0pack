@@ -85,7 +85,7 @@ namespace ELF {
         std::ofstream src_ostream{src_tmpf, std::ios::out};
         if(!src_ostream.is_open())
         {
-            _logger->error("Couln't open compile src file: {}", src_tmpf.c_str());
+            _logger->error("Couldn't open compile src file: {}", src_tmpf.c_str());
             exit(-1);
         }
         src_ostream << asm_buf.str();

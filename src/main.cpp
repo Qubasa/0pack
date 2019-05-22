@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     options.add_options()
       ("d,debug", "Enable debugging")
       ("i,input", "Input file path. Required.", cxxopts::value<std::string>())
-      ("p,payload", "Payload path. ", cxxopts::value<std::string>())
-      ("b,bin_payload", "Payload path as binary.", cxxopts::value<std::string>())
+      ("p,payload", "Fasm payload path. ", cxxopts::value<std::string>())
+      ("b,bin_payload", "Binary payload path.", cxxopts::value<std::string>())
       ("o,output", "Output file path. Required.", cxxopts::value<std::string>())
       ("s,strip", "Strip the binary. Optional.")
       ;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     if(result.count("bin_payload"))
     {
-        payload_path = result["payload"].as<std::string>();
+        payload_path = result["bin_payload"].as<std::string>();
     }
 
     std::string src_file = result["input"].as<std::string>();
@@ -72,63 +72,116 @@ int main(int argc, char *argv[]) {
     // Check if targeted binary exists
     if(!does_file_exist(src_file))
     {
-        console->error("File not found: {}", argv[1]);
+        console->error("File not found: {}", src_file);
         exit(1);
     }
 
     // Check if payload bin exists
     if(!does_file_exist(payload_path))
     {
-        console->error("File not found: {}", argv[2]);
+        console->error("File not found: {}", payload_path);
         exit(1);
     }
 
     // Parse targeted binary
     Packer packer{src_file, output_file};
 
-    // Read compiled decryptor stub into binary vector
-    std::ifstream payload_fd{payload_path, std::ios::in };
-    if (!payload_fd.is_open()) {
-        console->error("Couln't open payload src file: {}", payload_path);
-        exit(1);
-    }
-    std::string payload_buffer{ std::istreambuf_iterator<char>(payload_fd), std::istreambuf_iterator<char>()};
-    payload_fd.close();
+    // Shared variables
+    std::vector<std::reference_wrapper<Relocation>> empty_buf_relocs;
+    std::vector<uint8_t> compiled_payload;
+    size_t jmp_addr;
 
-    console->info(fmt::format("Original entrypoint is {:#x}", packer.get_entrypoint() ));
-
-    Loader loader;
-    loader.push_all_registers({RegName::rbp, RegName::rsp});
-    loader.append(payload_buffer);
-    loader.pop_all_registers({RegName::rbp, RegName::rsp});
-
-    size_t payload_size = loader.compile().size() + 10;
-    std::vector<std::reference_wrapper<Relocation>> empty_buf_relocs = packer.init_relocs(0, payload_size);
-
-    console->debug("Estimated payload size {}", payload_size);
-    console->debug("Empty buf relocs {}", empty_buf_relocs.size());
-
-    size_t jmp_addr = packer.get_entrypoint();
-
-    console->debug("Jmp address: {:#x}", jmp_addr);
-
-    loader.append(R"(
-            jmp {:#x}
-            )", jmp_addr );
-
-
-    std::vector<uint8_t> compiled_payload = loader.compile();
-    if(compiled_payload.size() > payload_size)
+    // If fasm payload
+    if(result.count("payload"))
     {
-        console->error("The compiled payload is bigger then the initialized relocations!");
-        exit(1);
+        // Read compiled decryptor stub into binary vector
+        std::ifstream payload_fd{payload_path, std::ios::in };
+        if (!payload_fd.is_open()) {
+            console->error("Couln't open payload src file: {}", payload_path);
+            exit(1);
+        }
+        std::string payload_buffer{ std::istreambuf_iterator<char>(payload_fd), std::istreambuf_iterator<char>()};
+        payload_fd.close();
+
+        console->info("Original entrypoint is {:#x}", packer.get_entrypoint() );
+
+        Loader loader;
+        loader.push_all_registers({RegName::rbp, RegName::rsp});
+        loader.append(payload_buffer);
+        loader.pop_all_registers({RegName::rbp, RegName::rsp});
+
+        size_t payload_size = loader.compile().size() + 10;
+        empty_buf_relocs = packer.init_relocs(0, payload_size);
+
+        console->debug("Estimated payload size {}", payload_size);
+        console->debug("Empty buf relocs {}", empty_buf_relocs.size());
+
+        jmp_addr = packer.get_entrypoint();
+
+        console->debug("Jmp address: {:#x}", jmp_addr);
+
+        loader.append(R"(
+                jmp {:#x}
+                )", jmp_addr );
+
+
+        compiled_payload = loader.compile();
+        if(compiled_payload.size() > payload_size)
+        {
+            console->error("The compiled payload is bigger then the initialized relocations!");
+            exit(1);
+        }
+
+        /* loader.compile_to_standalone("."); */
+
+        console->info("Payload size: {}", compiled_payload.size());
     }
 
-    /* loader.compile_to_standalone("."); */
+    // If binary payload
+    if(result.count("bin_payload"))
+    {
+        // Read compiled decryptor stub into binary vector
+        std::ifstream payload_fd{payload_path, std::ios::in | std::ios::binary };
+        if (!payload_fd.is_open()) {
+            console->error("Couln't open payload bin file: {}", payload_path);
+            exit(-1);
+        }
+        compiled_payload = { std::istreambuf_iterator<char>(payload_fd), std::istreambuf_iterator<char>()};
+        payload_fd.close();
 
-    console->info("Payload size: {}", compiled_payload.size());
+        console->info("Original entrypoint is {:#x}", packer.get_entrypoint() );
 
-    // Set first segment to writeable
+        size_t payload_size = compiled_payload.size() + 10;
+        empty_buf_relocs = packer.init_relocs(0, payload_size);
+
+        console->debug("Estimated payload size {}", payload_size);
+        console->debug("Empty buf relocs {}", empty_buf_relocs.size());
+
+        jmp_addr = packer.get_entrypoint();
+
+        console->debug("Jmp address: {:#x}", jmp_addr);
+
+        // Append jmp to main
+        Loader loader;
+        loader.append(R"(
+                jmp {:#x}
+                )", jmp_addr );
+
+        std::vector<uint8_t> jmp_p = loader.compile();
+        compiled_payload.insert(compiled_payload.end(), jmp_p.begin(), jmp_p.end());
+
+        if(compiled_payload.size() > payload_size)
+        {
+            console->error("The compiled payload is bigger then the initialized relocations!");
+            exit(1);
+        }
+
+        /* loader.compile_to_standalone("."); */
+
+        console->info("Payload size: {}", compiled_payload.size());
+    }
+
+    // Set first segment to rwx
     packer.set_first_seg_rwx();
     packer.buf_to_reloc(compiled_payload, empty_buf_relocs);
 
