@@ -61,12 +61,6 @@ Needs a fasm payload,
 0pack prepends and appends a "push/pop all registers"
 and a jmp to the original entrypoint to the payload.
 
-## Remarks
-Altough I used the LIEF library to accomplish this task, I wouldn't encourage to use it. It is very inconsistent and intransparant in what it is doing. Often times the
-library is downright broken. I did not find a working library for
-x64 PIE enabled ELF binaries. If someone has suggestions,
-feel free to email me on: luis.nixos@gmail.com
-
 
 ## Dependencies
 * cmake
