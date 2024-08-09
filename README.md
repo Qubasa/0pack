@@ -2,10 +2,8 @@
 ================================================
 
 # Description
-An ELF x64 binary payload injector written in c++ using the LIEF library.
-Injects shellcode written in fasm as relocations into the header.
-Execution begins at entrypoint 0 aka the header, this confuses or downright breaks debuggers.
-The whole first segment is rwx, this can be mitigated at runtime through an injected payload which sets the binaries segment to just rx.
+A payload injector designed for x64 binaries, engineered to obscure code from debuggers and disassemblers. It integrates shellcode, crafted in Flat Assembler (FASM), into the binary's header as part of the relocation process. The execution is initiated at the unconventional entry point—offset zero of the header—deliberately creating ambiguity that often incapacitates debugging tools. 
+
 
 # Compiler flags
 The targeted binary must have following flags:
