@@ -1,7 +1,11 @@
 0pack
 ================================================
 
-A payload injector designed for x64 binaries, engineered to obscure code from debuggers and disassemblers. It integrates shellcode, crafted in Flat Assembler (FASM), into the binary's header as part of the relocation process. The execution is initiated at the unconventional entry point—offset zero of the header—deliberately creating ambiguity that often incapacitates debugging tools. The executed code can only be found by parsing the header relocations on disk.
+A payload injector designed for x64 binaries, engineered to obscure code from debuggers and disassemblers.
+It integrates shellcode, crafted in Flat Assembler (FASM), into the binary's header as part of the relocation process.
+The execution is initiated at the unconventional entry point, offset zero of the header,
+deliberately creating ambiguity that often incapacitates debugging tools.
+The executed code can only be found by parsing the header relocations on disk.
 
 
 # Compiler flags
